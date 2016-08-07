@@ -41,6 +41,7 @@ public class TaskInfoFactoryDocker implements TaskInfoFactory {
                 .setSlaveId(offer.getSlaveId())
                 .setTaskId(Protos.TaskID.newBuilder().setValue(taskId))
                 .addAllResources(resources)
+                .setDiscovery(Protos.DiscoveryInfo.newBuilder().setName(offer.getHostname()).setVisibility(Protos.DiscoveryInfo.Visibility.FRAMEWORK))
                 .setContainer(Protos.ContainerInfo.newBuilder()
                         .setType(Protos.ContainerInfo.Type.DOCKER)
                         .setDocker(Protos.ContainerInfo.DockerInfo.newBuilder()

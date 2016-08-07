@@ -31,6 +31,7 @@ public class TaskInfoFactoryCommand implements TaskInfoFactory {
                 .setSlaveId(offer.getSlaveId())
                 .setTaskId(Protos.TaskID.newBuilder().setValue(taskId))
                 .addAllResources(resources)
+                .setDiscovery(Protos.DiscoveryInfo.newBuilder().setName(offer.getHostname()).setVisibility(Protos.DiscoveryInfo.Visibility.FRAMEWORK))
                 .setCommand(commandInfoMesosProtoFactory.create(executionParameters.getEnvironmentVariables()))
                 .build();
     }
