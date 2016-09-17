@@ -27,6 +27,9 @@ public class TaskInfoFactoryDocker implements TaskInfoFactory {
     @Value("${mesos.docker.network:BRIDGE}")
     protected String networkMode; // May be BRIDGE or HOST
 
+    @Value("${mesos.docker.forcepull:false}")
+    protected boolean forcePull;
+
     @Autowired
     MesosConfigProperties mesosConfig;
 
@@ -48,6 +51,7 @@ public class TaskInfoFactoryDocker implements TaskInfoFactory {
                                 .setImage(dockerImage)
                                 .addAllPortMappings(portMappings(executionParameters.getPortMappings()))
                                 .setNetwork(Protos.ContainerInfo.DockerInfo.Network.valueOf(networkMode))
+                                .setForcePullImage(forcePull)
                         )
                         .addAllVolumes(volumeMappings(executionParameters.getVolumeMappings()))
                 )
