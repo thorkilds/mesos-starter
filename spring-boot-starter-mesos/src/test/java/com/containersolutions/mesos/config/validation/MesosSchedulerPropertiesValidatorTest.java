@@ -80,6 +80,7 @@ public class MesosSchedulerPropertiesValidatorTest {
     public void willRequireContainerPortWhenContainerized() throws Exception {
         config.setDocker(new DockerConfigProperties() {{
             setImage("test");
+            setNetwork("BRIDGE");
         }});
         config.setResources(new ResourcesConfigProperties() {{
             setPorts(Collections.singletonMap("test", new ResourcePortConfigProperties() {{
