@@ -26,13 +26,19 @@ public class TaskInfoFactoryCommand implements TaskInfoFactory {
     @Override
     public Protos.TaskInfo create(String taskId, Protos.Offer offer, List<Protos.Resource> resources, ExecutionParameters executionParameters) {
         logger.debug("Creating Mesos task for taskId=" + taskId);
-        return Protos.TaskInfo.newBuilder()
+
+        Protos.TaskInfo.Builder taskInfoBuilder = Protos.TaskInfo.newBuilder()
                 .setName(applicationName + ".task")
                 .setSlaveId(offer.getSlaveId())
                 .setTaskId(Protos.TaskID.newBuilder().setValue(taskId))
                 .addAllResources(resources)
-                .setDiscovery(Protos.DiscoveryInfo.newBuilder().setName(offer.getHostname()).setVisibility(Protos.DiscoveryInfo.Visibility.FRAMEWORK))
-                .setCommand(commandInfoMesosProtoFactory.create(executionParameters.getEnvironmentVariables()))
-                .build();
+                .setCommand(commandInfoMesosProtoFactory.create(executionParameters.getEnvironmentVariables()));
+
+        if (offer.hasHostname()) {
+            taskInfoBuilder.setDiscovery(Protos.DiscoveryInfo.newBuilder().setName(offer.getHostname())
+                    .setVisibility(Protos.DiscoveryInfo.Visibility.FRAMEWORK));
+        }
+
+        return taskInfoBuilder.build();
     }
 }
